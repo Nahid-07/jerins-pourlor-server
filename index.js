@@ -23,9 +23,14 @@ async function run() {
   const servicesCollection = client
     .db("Jerins-pourlorDB")
     .collection("Services");
+
   const bookedServiceCollection = client
     .db("Jerins-pourlorDB")
     .collection("BookedItems");
+  const usersCollection = client
+    .db("Jerins-pourlorDB")
+    .collection("Users");
+
   app.get("/services", async (req, res) => {
     const query = {};
     const cursor = servicesCollection.find(query).limit(3)
@@ -55,6 +60,12 @@ async function run() {
     const query={};
     const booked = await bookedServiceCollection.find(query).toArray()
     res.send(booked)
+  });
+
+  app.post('/users', async(req,res)=>{
+    const user = req.body;
+    const result = await usersCollection.insertOne(user);
+    res.send(result)
   })
 }
 run().catch((err) => console.log(err.message));
