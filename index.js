@@ -28,9 +28,16 @@ async function run() {
     .collection("BookedItems");
   app.get("/services", async (req, res) => {
     const query = {};
-    const services = await servicesCollection.find(query).toArray();
+    const cursor = servicesCollection.find(query).limit(3)
+    const services = await cursor.toArray();
     res.send(services);
   });
+
+  app.get('/explore-all-services', async(req,res)=>{
+    const query = {};
+    const services = await servicesCollection.find(query).toArray();
+    res.send(services)
+  })
 
   app.post('/services',async(req,res)=>{
     const services = req.body;
